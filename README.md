@@ -42,7 +42,11 @@ Istio is, in a word, awesome. The service mesh is a vital component of a modern
 microservice stack, and Istio is rapidly becoming the de facto standard. A 
 great many problems are solved out of the box, leaving us to focus on our own 
 problems. It just so happens that the problem here, the service mesh, is hugely 
-impactful and crucial to understanding our system and how data flows through it.
+impactful and crucial to implementing a distributed system and managing the 
+interaction between services. Imagine if you had to write an operating system 
+each time you wanted to build a new program! Although not quite as dramatic, 
+that situation was very similar to the one faced by authors of distributed 
+systems until fairly recently.
 
 With the imminent 1.0 release of Istio, we should be able to install Istio with 
 Homebrew and Helm, consolidating this a bit. For now, we'll manually download 
