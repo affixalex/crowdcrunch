@@ -34,7 +34,7 @@ Let's begin by making a directory to contain our work here.
 
 Helm Charts make it fairly easy to describe and install complex Kubernetes deployments and it is an official Kubernetes project now, so we'll be using 
 Helm in this application. Helm and Kubernetes suffer from a very uncommon 
-issue: at times, it feels too easy. 
+issue: at times, it feels too easy. Here is [a great article](https://developer.epages.com/blog/tech-stories/kubernetes-deployments-with-helm) that walks through the design of Helm and describes how we're going to be using it in this context. The tl;dr version is that Helm takes a lot of guesswork out of deploying applications to Kubernetes and it's worth learning.
 
 ### Istio
 
