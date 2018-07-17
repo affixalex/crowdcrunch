@@ -102,6 +102,9 @@ Off to the races!
 
 There are still many caveats to production deployment, but we're getting there.
 
+
+<img src="img/soon.jpg" align="middle" width="400px"/>
+
 ### Observability with Kiali
 
 Kiali is cool. I mean, it's really cool. With Kiali, we can visualize and 
