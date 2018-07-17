@@ -44,7 +44,9 @@ great many problems are solved out of the box, leaving us to focus on our own
 problems. It just so happens that the problem here, the service mesh, is hugely 
 impactful and crucial to understanding our system and how data flows through it.
 
-With the imminent 1.0 release of Istio, we should be able to install Istio with Homebrew and consolidate this a bit. For now, we'll manually download the 1.0 release snapshot and install it with `helm`.
+With the imminent 1.0 release of Istio, we should be able to install Istio with 
+Homebrew and Helm, consolidating this a bit. For now, we'll manually download 
+the 0.8 release snapshot and install it with `helm`.
 
     wget https://github.com/istio/istio/releases/download/0.8.0/istio-0.8.0-osx.tar.gz
     tar -xzf istio-0.8.0-osx.tar.gz
