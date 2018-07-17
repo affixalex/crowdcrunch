@@ -45,7 +45,7 @@ problems. It just so happens that the problem here, the service mesh, is hugely
 impactful and crucial to implementing a distributed system and managing the 
 interaction between services. Imagine if you had to write an operating system 
 each time you wanted to build a new program! Although not quite as dramatic, 
-that situation was very similar to the one faced by authors of distributed 
+that situation would be very similar to the one faced by authors of distributed 
 systems until fairly recently.
 
 With the imminent 1.0 release of Istio, we should be able to install Istio with 
