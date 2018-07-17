@@ -2,7 +2,7 @@
 
 There are a lot of moving parts here in a seemingly simple example!
 
-I initially wanted to use the most recent Istio 1.0 snapshot, but I think it is 
+I initially wanted to use the most recent Istio 1.0 snapshot but I think it is 
 more prudent here to use the 0.8 LTS release and work with a stable foundation.
 
 ## Development Environment
@@ -34,7 +34,7 @@ Let's begin by making a directory to contain our work here.
 
 Helm Charts make it fairly easy to describe and install complex Kubernetes deployments and it is an official Kubernetes project now, so we'll be using 
 Helm in this application. Helm and Kubernetes suffer from a very uncommon 
-issue: at times, it feels too easy.
+issue: at times, it feels too easy. 
 
 ### Istio
 
@@ -100,7 +100,12 @@ There are still many caveats to production deployment, but we're getting there.
 
 ### Observability with Kiali
 
-Kiali is cool. I mean, it's really cool.
+Kiali is cool. I mean, it's really cool. With Kiali, we can visualize and 
+understand the relationship between the services in our application as it 
+runs. The great thing about this is that it is not specific to any one 
+application or service toplogy; it can be used to visualize anything that is 
+running atop an Istio service mesh. The possibilities are endless and the 
+project is still young, but I think it is very exciting.
 
     curl https://raw.githubusercontent.com/kiali/kiali/v0.5.0/deploy/kubernetes/kiali-configmap.yaml | \
     VERSION_LABEL=master envsubst | kubectl create -n istio-system -f -
@@ -125,17 +130,21 @@ You can login with username and password, "admin"
 I recommend using `tmux` or `screen` so you can easily keep a few sessions 
 going at once without running kubectl in the background for port forwarding.
 
+Kiali is not only useful for runtime analysis. As we'll see here, it is also 
+very useful tool for application design and development. The architecture 
+design mockups are going to closely match what Kiali shows us in a live system, 
+providing us a clear path from conception to actualization.
+
 ### Observability with Prometheus and Grafana
 
 Kiali provides insight into the service mesh and the way that traffic is 
-flowing through it, but sometimes we also want specific insights into our own 
+flowing through it but sometimes we also want specific insights into our own 
 application according to metrics and dashboards that we define. This is where 
 Promethus and Grafana become invaluable, allowing us to get a very complete 
 picture of how our application is behaving in realtime.
 
     kubectl -n istio-system port-forward $(kubectl -n istio-system get pod -l app=grafana -o jsonpath='{.items[0].metadata.name}') 3000:3000
     open http://localhost:3000 # In a seperate shell
-
 
 ## Writing Our Application 
 
@@ -144,7 +153,7 @@ world with [GraphQL stitching](https://codeburst.io/nodejs-graphql-micro-service
 thing about this approach is that it is language agnostic, so you can choose a 
 different programming language if it is more well suited to a particular 
 service. One current drawback of this approach is that there isn't a good 
-solution for GraphQL Subscriptions but I'm confident that patterns will emerge 
+solution for GraphQL Subscriptions but I'm confident that solutions will emerge 
 soon.
 
 The next series of commits to this repository will walk through the finer 
