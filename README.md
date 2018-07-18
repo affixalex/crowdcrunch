@@ -218,8 +218,7 @@ soon.
 At a glance, you can see that this repository is itself a Helm chart. 
 Deployment and rolling upgrades are a fundamental part of the design here!
 
-Let's create some subcharts describing our microservices. These are already in
-the repository, but this is how it begins!
+Let's create some subcharts describing our microservices.
 
     cd charts
     helm create customers
@@ -231,7 +230,7 @@ the repository, but this is how it begins!
     helm create payments
     helm create users
 
-Let's also create a Makefile for easily building our microservices and publishing the Docker images. In a real application, we'd want to use some sort of private Docker repository... with CrowdCrunch, you'll be able to publish them on IPFS and avoid any single point of failure in this step. For now, we'll just publish them to the Docker hub. Let's try building them...
+Let's also create a Makefile for easily building our microservices and publishing the Docker images. It's called a GNUmakefile because some people have Solaris scars and they have a different `make` that will almost certainly not work with a GNU Makefile. In a real application, we'd want to use some sort of private Docker repository... with CrowdCrunch, you'll be able to publish them on IPFS and avoid any single point of failure in this step. For now, we'll just publish them to the Docker hub. Let's try building them...
 
     make
 
