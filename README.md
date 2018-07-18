@@ -52,7 +52,7 @@ There is certainly something to be said for seriousness and robustness, we're as
 
 <img src="img/keepcalm.png" align="middle" width="400px"/>
 
-What React/Redux and GraphQL afford is is an opportunity to think of problems very differently. 
+What Kubernetes, Istio, React/Redux, and GraphQL afford is is an opportunity to think of problems very differently. 
 
 ## Development Environment
 
@@ -126,7 +126,8 @@ As Helm works its magic, we can watch the progress!
     kubectl get pods -n istio-system
 
 In only a few lines, we've done quite a bit. Particularly noteworthy is that 
-TLS is enabled both in the control plane and between service instances. We also 
+TLS is enabled both in the control plane and between service instances; this is 
+crucial if our services will be interacting over an untrusted network. We also 
 have automatic sidecar container injection, so we don't really have to think 
 about Envoy as application developers. This is pretty nice.
 
@@ -201,8 +202,8 @@ application according to metrics and dashboards that we define. This is where
 Promethus and Grafana become invaluable, allowing us to get a very complete 
 picture of how our application is behaving in realtime.
 
-    kubectl -n istio-system port-forward $(kubectl -n istio-system get pod -l app=grafana -o jsonpath='{.items[0].metadata.name}') 3000:3000
-    open http://localhost:3000 # In a seperate shell
+    kubectl -n istio-system port-forward $(kubectl -n istio-system get pod -l app=grafana -o jsonpath='{.items[0].metadata.name}') 3001:3000
+    open http://localhost:300 # In a seperate shell
 
 ## Writing Our Application 
 
@@ -217,6 +218,24 @@ soon.
 At a glance, you can see that this repository is itself a Helm chart. 
 Deployment and rolling upgrades are a fundamental part of the design here!
 
+Let's create some subcharts describing our microservices. These are already in
+the repository, but this is how it begins!
+
+    cd charts
+    helm create customers
+    helm create exchanges
+    helm create frontend
+    helm create fulfillment
+    helm create inventory
+    helm create orders
+    helm create payments
+    helm create users
+
+Let's also create a Makefile for easily building our microservices and publishing the Docker images. In a real application, we'd want to use some sort of private Docker repository... with CrowdCrunch, you'll be able to publish them on IPFS and avoid any single point of failure in this step. For now, we'll just publish them to the Docker hub. Let's try building them...
+
+    make
+
+Oh, no, build errors! Whatever will we do?!
 
 ## Chaos Engineering
 
