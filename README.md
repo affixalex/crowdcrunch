@@ -1,11 +1,5 @@
 # CrowdCrunch Microservices Example
 
-There are a lot of moving parts here in a seemingly simple example!
-
-I initially wanted to use the most recent Istio 1.0 snapshot but I think it is 
-more prudent here to use the 0.8 LTS release and work with a stable foundation.
-Istio 1.0 is going to be A Big Deal(TM), but let's see what we can do today.
-
 Bryan Cantrill first made the observation that the modern microservice movement closely mimics the Unix philosophy. For those who have forgotten the Unix philosophy, it is three simple rules...
 
 1. Write small tools that do one thing and do it well.
@@ -22,9 +16,23 @@ Wouldn't it be nice if there were a query language that let us describe the shap
 
 How do we solve real problems using this approach? Let's consider the relatively standard set of business problems solved by projects such as [OFBiz](https://ofbiz.apache.org/) and [Magento](https://magento.com/). How can we address these problems in our brave new cloud native world?
 
-## Development Environment
+There are a lot of moving parts here in a seemingly simple example! This 
+seemingly fractal complexity can be a little bit overwhelming, but let's walk
+through this problem and find out what we can learn here. 
 
-### Docker for Mac
+I initially wanted to use the most recent Istio 1.0 snapshot but I think it is 
+more prudent here to use the 0.8 LTS release and work with a stable foundation.
+Istio 1.0 is going to be A Big Deal(TM), but let's see what we can do today.
+
+## A Simple Concept Meets Reality
+
+Let's consider a very simple conceptual model of this. A customer places orders from inventory, this results in payments which result in fulfillments and possibly returns. Everything is logged. Simple enough, right? Let's try to model this and consider the way data would actually flow through the system.
+
+<img src="img/simpleconcept.jpg" align="middle" width="400px"/>
+
+The problem here is that this model isn't accurate at all. Payments refer to orders which are the predicate of fulfillments. Returns refer to both orders and payments which means that payments flow bidirectionally. What's more, this diagram doesn't even consider the underlying architecture. To a software developer, the diagram above is basically meaningless.
+
+## Development Environment
 
 I'm going to assume a MacOS X 10.13 environment with Homebrew installed. This 
 also requires XCode to be installed, but the full setup of this environement is 
