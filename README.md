@@ -30,7 +30,29 @@ Let's consider a very simple conceptual model of this. A customer places orders 
 
 <img src="img/simpleconcept.png" align="middle" width="400px"/>
 
-The problem here is that this model isn't accurate at all. Payments refer to orders which are the predicate of fulfillments. Returns refer to both orders and payments which means that payments flow bidirectionally. What's more, this diagram doesn't even consider the underlying architecture. To a software developer, the diagram above is basically meaningless.
+The problem here is that this model isn't accurate at all. Payments refer to orders which are the predicate of fulfillments. Returns refer to both orders and payments which means that payments flow bidirectionally. What's more, this diagram doesn't even consider the underlying architecture. To a software developer, the **diagram above is basically meaningless**.
+
+How can we fix this? What's the problem here?
+
+## Confront The World As It Is
+
+Virtually no one ever looks at OFBiz or Magento and thinks, wow, this is a really exciting thing to develop. They are Serious Business(TM) and Commercial Grade Solutions(TM) and based on Years Of Experience(TM). 
+
+Let's try to reconsider the above model.
+
+<img src="img/realistic_concept.png" align="middle" width="400px"/>
+
+This is somewhat pleasingly convoluted. I didn't even finish trying to describe all of the ways that data would flow between these microservices and this doesn't consider the reality that some orders will be for products that don't have a physical manifestation. For digital products, fulfillment might just be sending an e-mail. I don't think that we are modeling anything particularly useful or relevant here, it's essential naval gazing. 
+
+## Rethinking Our Ontology
+
+We're still thinking in terms of the things that came before us! 
+
+There is certainly something to be said for seriousness and robustness, we're aspiring to both of those things, but what we have here is a bit of an impedance mismatch. Object/relational mappers are somewhat inherently based on the notion of physical objects being mapped from an SQL database to the singular and plural nouns describing a conceptual domain. So far we have an image with some boxes and lots of lines attempting to describe their relationships and it looks impressive. People built complex software systems like this for a long time and many of them also wore pocket protectors.
+
+<img src="img/keepcalm.png" align="middle" width="400px"/>
+
+What React/Redux and GraphQL afford is is an opportunity to think of problems very differently. 
 
 ## Development Environment
 
