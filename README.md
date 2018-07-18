@@ -28,7 +28,7 @@ Istio 1.0 is going to be A Big Deal(TM), but let's see what we can do today.
 
 Let's consider a very simple conceptual model of this. A customer places orders from inventory, this results in payments which result in fulfillments and possibly returns. Everything is logged. Simple enough, right? Let's try to model this and consider the way data would actually flow through the system.
 
-<img src="img/simpleconcept.jpg" align="middle" width="400px"/>
+<img src="img/simpleconcept.png" align="middle" width="400px"/>
 
 The problem here is that this model isn't accurate at all. Payments refer to orders which are the predicate of fulfillments. Returns refer to both orders and payments which means that payments flow bidirectionally. What's more, this diagram doesn't even consider the underlying architecture. To a software developer, the diagram above is basically meaningless.
 
