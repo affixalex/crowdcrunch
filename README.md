@@ -4,8 +4,27 @@ There are a lot of moving parts here in a seemingly simple example!
 
 I initially wanted to use the most recent Istio 1.0 snapshot but I think it is 
 more prudent here to use the 0.8 LTS release and work with a stable foundation.
+Istio 1.0 is going to be A Big Deal(TM), but let's see what we can do today.
+
+Bryan Cantrill first made the observation that the modern microservice movement closely mimics the Unix philosophy. For those who have forgotten the Unix philosophy, it is three simple rules...
+
+1. Write small tools that do one thing and do it well.
+2. Write tools that work together.
+3. Write tools that communicate using text streams, because that is a universal interface.
+
+Rather than text streams, which are a bit dated, we're using JSON over HTTPS but the principle of small components being interconnected is not new. I would recommend checking out some of [Bryan Cantrill's talks](http://dtrace.org/blogs/bmc/2018/02/03/talks/) because they are very entertaining and they'll give you some great historical perspective on what is happening in computing today.
+
+Wouldn't it be nice if there were a query language that let us describe the shape of our desired JSON response and returned exactly the data we need? Yes, and that's exactly what GraphQL provides. Our philosophy then becomes...
+
+1. Write small services that do one thing and do it well.
+2. Write services that work together.
+3. Write services that communicate using GraphQL.
+
+How do we solve real problems using this approach? Let's consider the relatively standard set of business problems solved by projects such as [OFBiz](https://ofbiz.apache.org/) and [Magento](https://magento.com/). How can we address these problems in our brave new cloud native world?
 
 ## Development Environment
+
+### Docker for Mac
 
 I'm going to assume a MacOS X 10.13 environment with Homebrew installed. This 
 also requires XCode to be installed, but the full setup of this environement is 
@@ -17,12 +36,13 @@ we can easily destroy our local cluster and recreate it if needed. Very nice!
     brew install kubernetes-helm
     brew install kubernetes-cli
     brew install git
+    brew install wget
     brew install gettext
     brew link --force gettext # needed to envsubst
 
 It's reasonably safe to have a newer version of the `kubectl` command than your server version. These should align more precisely in the near future.
 
-## Getting Into The Kubernetes Ecosystem
+## Building The Kubernetes Substrate
 
 ### Getting Started
 
@@ -39,7 +59,7 @@ issue: at times, it feels too easy. Here is [a great article](https://developer.
 ### Istio
 
 Istio is, in a word, awesome. The service mesh is a vital component of a modern 
-microservice stack, and Istio is rapidly becoming the de facto standard. A 
+microservice stack and Istio is rapidly becoming the de facto standard. A 
 great many problems are solved out of the box, leaving us to focus on our own 
 problems. It just so happens that the problem here, the service mesh, is hugely 
 impactful and crucial to implementing a distributed system and managing the 
@@ -104,7 +124,7 @@ There are still many caveats to production deployment, but we're getting there.
 
 <img src="img/soon.jpg" align="middle" width="400px"/>
 
-### Observability with Kiali
+### Observability with Kiali and Jaeger
 
 Kiali is cool. I mean, it's really cool. With Kiali, we can visualize and 
 understand the relationship between the services in our application as it 
@@ -141,7 +161,9 @@ very useful tool for application design and development. The architecture
 design mockups are going to closely match what Kiali shows us in a live system, 
 providing us a clear path from conception to actualization.
 
-### Observability with Prometheus and Grafana
+Kiali will be supported out of the box with Istio 1.0!
+
+### Monitoring with Prometheus and Grafana
 
 Kiali provides insight into the service mesh and the way that traffic is 
 flowing through it but sometimes we also want specific insights into our own 
@@ -162,10 +184,9 @@ service. One current drawback of this approach is that there isn't a good
 solution for GraphQL Subscriptions but I'm confident that solutions will emerge 
 soon.
 
-The next series of commits to this repository will walk through the finer 
-points of building our services and the decisions involved. Just now, at a 
-glance, you can see that this repository is itself a Helm chart. Deployment and 
-rolling upgrades are going to be a fundamental part of the design here!
+At a glance, you can see that this repository is itself a Helm chart. 
+Deployment and rolling upgrades are a fundamental part of the design here!
+
 
 ## Chaos Engineering
 
