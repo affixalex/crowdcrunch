@@ -99,8 +99,9 @@ that situation would be very similar to the one faced by authors of distributed
 systems until fairly recently.
 
 With the imminent 1.0 release of Istio, we should be able to install Istio with 
-Homebrew and Helm, consolidating this a bit. For now, we'll manually download 
-the 0.8 release snapshot and install it with `helm`.
+Homebrew and a stable Helm chart (without downloading the release), which would 
+consolidate this a bit. For now, we'll manually download the 0.8 release 
+snapshot and install it with `helm`.
 
     wget https://github.com/istio/istio/releases/download/0.8.0/istio-0.8.0-osx.tar.gz
     tar -xzf istio-0.8.0-osx.tar.gz
@@ -203,7 +204,27 @@ Promethus and Grafana become invaluable, allowing us to get a very complete
 picture of how our application is behaving in realtime.
 
     kubectl -n istio-system port-forward $(kubectl -n istio-system get pod -l app=grafana -o jsonpath='{.items[0].metadata.name}') 3001:3000
-    open http://localhost:300 # In a seperate shell
+    open http://localhost:3001 # In a seperate shell
+
+### Logging with the ELK stack
+
+Let's set up logging with the ELK stack! Kibana is an art form unto itself, so check out [this tutorial](https://logz.io/blog/kibana-tutorial/) for more information on how to slice and dice your logs.
+
+    cd ~/crowdcrunch
+    kubectl apply -f istio/logging-stack.yaml
+    istioctl create -f istio/fluentd.yaml
+
+We can investigate a bit with `kubectl get pods -n logging` and hopefully see something like...
+
+    NAME                             READY     STATUS    RESTARTS   AGE
+    elasticsearch-85d7f8d9d4-fbfkr   1/1       Running   0          1d
+    fluentd-es-657fc97b9c-9zqdw      1/1       Running   0          1d
+    kibana-7f759bd875-p6vnd          1/1       Running   0          1d
+
+Great !Now let's open up Kibana in a browser...
+
+    kubectl -n logging port-forward $(kubectl -n logging get pod -l app=kibana -o jsonpath='{.items[0].metadata.name}') 3002:5601
+    open http://localhost:3002 # In a seperate shell
 
 ## Writing Our Application 
 
@@ -211,14 +232,17 @@ We'll be using Node 10.x to mock up our microservices and present them to the
 world with [GraphQL stitching](https://codeburst.io/nodejs-graphql-micro-services-using-remote-stitching-7540030a0753). This is actually as cool as it sounds! One great 
 thing about this approach is that it is language agnostic, so you can choose a 
 different programming language if it is more well suited to a particular 
-service. One current drawback of this approach is that there isn't a good 
-solution for GraphQL Subscriptions but I'm confident that solutions will emerge 
-soon.
+service.
 
 At a glance, you can see that this repository is itself a Helm chart. 
 Deployment and rolling upgrades are a fundamental part of the design here!
+This repository initially began life as a Helm chart which refers to the 
+deployment of our application as a whole; a collection of services!
 
-Let's create some subcharts describing our microservices.
+    cd ~
+    helm create crowdcrunch
+
+Then I created some subcharts describing our microservices.
 
     cd charts
     helm create customers
@@ -230,7 +254,7 @@ Let's create some subcharts describing our microservices.
     helm create payments
     helm create users
 
-Let's also create a Makefile for easily building our microservices and publishing the Docker images. It's called a GNUmakefile because some people have Solaris scars and they have a different `make` that will almost certainly not work with a GNU Makefile. In a real application, we'd want to use some sort of private Docker repository... with CrowdCrunch, you'll be able to publish them on IPFS and avoid any single point of failure in this step. For now, we'll just publish them to the Docker hub. Let's try building them...
+Let's also create a Makefile for easily building our microservices and publishing the Docker images. It's called a GNUmakefile because some people have Solaris scars and they have a different `make` that will almost certainly not work with a GNU Makefile. In a real application, we'd want to use some sort of private Docker repository... when deploying applications to the CrowdCrunch swarm, you'll be able to publish them on IPFS and avoid any single point of failure in this step. For now, we'll just publish them to the Docker hub. Let's try building them...
 
     make
 
